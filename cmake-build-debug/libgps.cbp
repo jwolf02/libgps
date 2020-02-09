@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="libgps"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/jwolf/Projects/libgps/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/jwolf/Projects/libgps/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/jwolf/Projects/libgps/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gps">
+				<Option output="/home/jwolf/Projects/libgps/cmake-build-debug/libgps.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/jwolf/Projects/libgps/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/jwolf/Projects/libgps/src"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 gps"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gps/fast">
+				<Option output="/home/jwolf/Projects/libgps/cmake-build-debug/libgps.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/jwolf/Projects/libgps/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/jwolf/Projects/libgps/src"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 gps/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="logger">
+				<Option output="/home/jwolf/Projects/libgps/cmake-build-debug/logger" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/jwolf/Projects/libgps/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/jwolf/Projects/libgps/src"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 logger"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="logger/fast">
+				<Option output="/home/jwolf/Projects/libgps/cmake-build-debug/logger" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/jwolf/Projects/libgps/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/jwolf/Projects/libgps/src"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 logger/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/jwolf/Projects/libgps/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/jwolf/Projects/libgps/src/GPS.cpp">
+			<Option target="gps"/>
+		</Unit>
+		<Unit filename="/home/jwolf/Projects/libgps/src/GPS.hpp">
+			<Option target="gps"/>
+		</Unit>
+		<Unit filename="/home/jwolf/Projects/libgps/src/error.hpp">
+			<Option target="gps"/>
+		</Unit>
+		<Unit filename="/home/jwolf/Projects/libgps/src/gps_data.hpp">
+			<Option target="gps"/>
+		</Unit>
+		<Unit filename="/home/jwolf/Projects/libgps/src/main.cpp">
+			<Option target="logger"/>
+		</Unit>
+		<Unit filename="/home/jwolf/Projects/libgps/src/nmea.cpp">
+			<Option target="gps"/>
+		</Unit>
+		<Unit filename="/home/jwolf/Projects/libgps/src/nmea.hpp">
+			<Option target="gps"/>
+		</Unit>
+		<Unit filename="/home/jwolf/Projects/libgps/src/serial.cpp">
+			<Option target="gps"/>
+		</Unit>
+		<Unit filename="/home/jwolf/Projects/libgps/src/serial.hpp">
+			<Option target="gps"/>
+		</Unit>
+		<Unit filename="/home/jwolf/Projects/libgps/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

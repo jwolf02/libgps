@@ -1,0 +1,3 @@
+/home/jwolf/Projects/libgps/build/CMakeFiles/rebuild_cache.dir
+/home/jwolf/Projects/libgps/build/CMakeFiles/gps.dir
+/home/jwolf/Projects/libgps/build/CMakeFiles/edit_cache.dir

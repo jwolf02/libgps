@@ -1,0 +1,4 @@
+/home/jwolf/.install/CLion-2019.3/clion-2019.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/jwolf/Projects/libgps
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/jwolf/Projects/libgps/cmake-build-debug
