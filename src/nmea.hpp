@@ -61,7 +61,16 @@ void nmea_parse_gprmc(char *, gprmc_t *);
 
 namespace nmea {
 
+    enum {
+        UNDEFINED = 0,
+        GPGGA,
+        GPRMC,
+        GPZDA
+    };
+
     bool valid_checksum(const std::string &message);
+
+    int message_type(const std::string &message);
 
     void parse_message(const std::string &message, gps_data &info);
 

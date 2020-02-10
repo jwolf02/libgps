@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -9,16 +8,8 @@
 
 #define THROW_ERROR     throw std::runtime_error(std::string(__func__) + ": " + strerror(errno))
 
-static int _open_wrapper(const char *fname, int mode) {
-    return open(fname, mode);
-}
-
-static int _close_wrapper(int fd) {
-    return close(fd);
-}
-
 serial_t serial::open(const std::string &devname) {
-    serial_t uart = _open_wrapper(devname.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
+    serial_t uart = ::open(devname.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
     if (uart < 0) {
         THROW_ERROR;
     }
@@ -68,6 +59,6 @@ void serial::readln(serial_t uart, std::string &line) {
 }
 
 void serial::close(int uart_fd) {
-    _close_wrapper(uart_fd);
+    ::close(uart_fd);
 }
 

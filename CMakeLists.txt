@@ -12,12 +12,20 @@ set(SOURCES 			src/GPS.hpp
 						src/serial.cpp
 						src/nmea.hpp
 						src/nmea.cpp
-						src/gps_data.hpp src/error.hpp)
+						src/gps_data.hpp test/nmea_test.cpp test/test.hpp)
 
 add_library(gps STATIC ${SOURCES})
 target_include_directories(gps PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(gps PUBLIC m pthread)
 
-add_executable(logger src/main.cpp)
-target_include_directories(logger PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(logger PUBLIC gps)
+add_executable(position_logger examples/position_logger.cpp)
+target_include_directories(position_logger PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(position_logger PUBLIC gps)
+
+enable_testing()
+
+add_executable(nmea_test test/nmea_test.cpp test/test.hpp)
+target_include_directories(nmea_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/test)
+target_link_libraries(nmea_test gps)
+
+add_test(NAME nmea_test COMMAND nmea_test)

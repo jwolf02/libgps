@@ -34,6 +34,8 @@ public:
 
     void update(gps_data &data);
 
+    void read(gps_data &data);
+
 private:
 
     void process_nmea_messages();

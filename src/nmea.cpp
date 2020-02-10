@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <cstdlib>
 #include <cinttypes>
 #include <cstring>
@@ -45,10 +44,25 @@ bool nmea::valid_checksum(const std::string &message) {
     return sum == checksum;
 }
 
+int nmea::message_type(const std::string & message) {
+    if (starts_with(message, NMEA_GPGGA)) {
+        return nmea::GPGGA;
+    } else if (starts_with(message, NMEA_GPRMC)) {
+        return nmea::GPRMC;
+    } else if (starts_with(message, NMEA_GPZDA)) {
+        return nmea::GPZDA;
+    } else {
+        return nmea::UNDEFINED;
+    }
+}
+
 void nmea::parse_gpgga(const std::string &message, gps_data &info) {
     const char *p = message.c_str();
 
-    p = strchr(p, ',') + 1; // skip time
+    p = strchr(p, ',') + 1;
+    info.hours = std::strtoul(std::string({ p[0], p[1], '\0' }).c_str(), nullptr, 10);
+    info.minutes = std::strtoul(std::string({ p[2], p[3], '\0' }).c_str(), nullptr, 10);
+    info.seconds = std::strtoul(std::string({ p[4], p[5], '\0' }).c_str(), nullptr, 10);
 
     p = strchr(p, ',') + 1;
     const double lat = std::strtod(p, nullptr);
@@ -77,7 +91,11 @@ void nmea::parse_gpgga(const std::string &message, gps_data &info) {
 void nmea::parse_gprmc(const std::string &message, gps_data &info) {
     const char *p = message.c_str();
 
-    p = strchr(p, ',') + 1; // skip time
+    p = strchr(p, ',') + 1;
+    info.hours = std::strtoul(std::string({ p[0], p[1], '\0' }).c_str(), nullptr, 10);
+    info.minutes = std::strtoul(std::string({ p[2], p[3], '\0' }).c_str(), nullptr, 10);
+    info.seconds = std::strtoul(std::string({ p[4], p[5], '\0' }).c_str(), nullptr, 10);
+
     p = strchr(p, ',') + 1; // skip status
 
     p = strchr(p, ',') + 1;
@@ -100,6 +118,23 @@ void nmea::parse_gprmc(const std::string &message, gps_data &info) {
 }
 
 void nmea::parse_gpzda(const std::string &message, gps_data &info) {
-    // not implemented yet
-    return;
+    const char *p = message.c_str();
+
+    p = strchr(p, ',') + 1;
+    info.hours = std::strtoul(std::string({ p[0], p[1], '\0' }).c_str(), nullptr, 10);
+    info.minutes = std::strtoul(std::string({ p[2], p[3], '\0' }).c_str(), nullptr, 10);
+    info.seconds = std::strtoul(std::string({ p[4], p[5], '\0' }).c_str(), nullptr, 10);
+
+
+    p = strchr(p, ',') + 1;
+    info.day = strtoul(p, nullptr, 10);
+
+    p = strchr(p, ',') + 1;
+    info.month = strtoul(p, nullptr, 10);
+
+    p = strchr(p, ',') + 1;
+    info.year = strtoul(p, nullptr, 10);
+
+    p = strchr(p, ',') + 1;
+    info.timezone = strtoul(p, nullptr, 10);
 }

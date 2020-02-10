@@ -72,3 +72,29 @@ void GPS::update(gps_data &data) {
     data = _data;
     _updated = false;
 }
+
+void GPS::read(struct gps_data & data) {
+    if (isStarted()) {
+        throw std::runtime_error("GPS device can only be read if not in asynchronous mode");
+    }
+
+    // read and parse messages until both an gpgga and an gprmc message has been found
+    bool read_gpgga = false, read_gprmc = false;
+    while (!(read_gpgga and read_gprmc)) {
+        std::string message;
+        serial::readln(_serial, message);
+
+        int mtype = nmea::message_type(message);
+        switch (mtype) {
+            case nmea::GPGGA : {
+                nmea::parse_gpgga(message, data);
+                read_gpgga = true;
+                break;
+            } case nmea::GPRMC : {
+                nmea::parse_gprmc(message, data);
+                read_gprmc = true;
+                break;
+            }
+        }
+    }
+}
