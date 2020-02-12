@@ -45,6 +45,7 @@ int main(int argc, const char *argv[]) {
         }
         lats.push_back(gps.latitude());
         lons.push_back(gps.longitude());
+        std::cout << gps.latitude() << " " << gps.longitude() << std::endl;
         std::cout << '\r' << "samples: " << (i + 1)<< std::flush;
     }
     std::cout << std::endl;
