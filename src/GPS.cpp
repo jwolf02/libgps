@@ -21,7 +21,7 @@ double GPS::distance(double lat0, double lon0, double lat1, double lon1) {
 
     double d_lat = (lat1 - lat0);
     double d_lon = (lon1 - lon0);
-    double a = sqr(std::sin(d_lat / 2.0)) + std::cos(lat1) * sqr(std::sin(d_lon / 2.0));
+    double a = sqr(std::sin(d_lat / 2.0)) + std::cos(lat0) * std::cos(lat1) * sqr(std::sin(d_lon / 2.0));
     double c = 2.0 * std::atan2(std::sqrt(a), std::sqrt(1.0 - a));
     return EARTH_RADIUS * c;
 }

@@ -50,8 +50,9 @@ int main(int argc, const char *argv[]) {
         gps.update();
         lats.push_back(gps.latitude());
         lons.push_back(gps.longitude());
-        std::cout << '\r' << "samples: " << (i + 1)<< std::endl;
+        std::cout << '\r' << "samples: " << (i + 1)<< std::flush;
     }
+    std::cout << std::endl;
 
     double lat_mean = sum(lats.begin(), lats.end()) / num_samples;
     double lon_mean = sum(lons.begin(), lons.end()) / num_samples;
