@@ -148,8 +148,6 @@ void GPS::process_messages() {
         // determine message type and parse accordingly
         {
             std::lock_guard<std::mutex> lock(_mtx);
-            auto t = nmea::message_type(message);
-            std::cout << t << std::endl;
             switch (nmea::message_type(message)) {
                 case nmea::GPGGA: {
                     nmea::parse_gpgga(message, _data);
