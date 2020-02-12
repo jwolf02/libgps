@@ -67,7 +67,7 @@ int main(int argc, const char *argv[]) {
     }
 
     printf("latitude (mean)=%.8f longitude (mean)=%.8f\n", lat_mean, lon_mean);
-    printf("distance (mean)=%.6f distance (max)=%.6f\n", mean_dist / num_samples, max_dist);
+    printf("distance (mean)=%.3f meters distance (max)=%.3f meters\n", mean_dist / num_samples, max_dist);
 
     return EXIT_SUCCESS;
 }
