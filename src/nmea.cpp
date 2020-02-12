@@ -50,7 +50,7 @@ int nmea::message_type(const std::string & message) {
     }
 }
 
-void nmea::parse_gpgga(const std::string &message, gps_data &info) {
+void nmea::parse_gpgga(const std::string &message, gps_data_t &info) {
     const char *p = message.c_str();
 
     p = strchr(p, ',') + 1;
@@ -82,7 +82,7 @@ void nmea::parse_gpgga(const std::string &message, gps_data &info) {
     info.altitude = std::strtod(p, nullptr);
 }
 
-void nmea::parse_gprmc(const std::string &message, gps_data &info) {
+void nmea::parse_gprmc(const std::string &message, gps_data_t &info) {
     const char *p = message.c_str();
 
     p = strchr(p, ',') + 1;
@@ -111,7 +111,7 @@ void nmea::parse_gprmc(const std::string &message, gps_data &info) {
     info.course = std::strtod(p, nullptr);
 }
 
-void nmea::parse_gpzda(const std::string &message, gps_data &info) {
+void nmea::parse_gpzda(const std::string &message, gps_data_t &info) {
     const char *p = message.c_str();
 
     p = strchr(p, ',') + 1;
@@ -133,6 +133,6 @@ void nmea::parse_gpzda(const std::string &message, gps_data &info) {
     info.timezone = strtoul(p, nullptr, 10);
 }
 
-void nmea::parse_gpgsa(const std::string & message, struct gps_data & info) {
+void nmea::parse_gpgsa(const std::string & message, struct gps_data_t & info) {
     // TODO: implement
 }

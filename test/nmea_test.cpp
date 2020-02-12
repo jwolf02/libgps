@@ -5,7 +5,7 @@
 #include "test.hpp"
 
 static void test_gpgga() {
-    gps_data data;
+    gps_data_t data;
     const std::string gpgga_message("$GPGGA,001038.00,4124.8963,N,08151.6838,W,2,04,5.4,354.682,M,-26.574,M,7.0,0138*7F");
 
     ASSERT(nmea::valid_checksum(gpgga_message));
@@ -23,7 +23,7 @@ static void test_gpgga() {
 }
 
 static void test_gprmc() {
-    gps_data data;
+    gps_data_t data;
     const std::string gprmc_message("$GPRMC,081836,A,4124.8963,S,08151.6838,E,000.05,360.0,130998,011.3,E*59");
 
     ASSERT(nmea::valid_checksum(gprmc_message));
@@ -40,7 +40,7 @@ static void test_gprmc() {
 }
 
 static void test_gpzda() {
-    gps_data data;
+    gps_data_t data;
     const std::string gpzda_message("$GPZDA,235959,31,12,1999,01,00*41");
 
     ASSERT(nmea::valid_checksum(gpzda_message));

@@ -43,7 +43,7 @@ void serial::readln(serial_t uart, std::string &line, uint32_t timeout_in_ms) {
     FD_ZERO(&set);
     FD_SET(uart, &set);
 
-    struct timeval tv = { timeout_in_ms / 1000, (timeout_in_ms % 1000) * 1000 };
+    struct timeval tv = { (long int) timeout_in_ms / 1000, (long int) (timeout_in_ms % 1000) * 1000 };
 
     bool line_feed_found = false;
     do {

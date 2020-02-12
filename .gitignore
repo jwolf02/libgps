@@ -2,10 +2,12 @@
 */build
 */cmake-build-debug
 */cmake-build-release
+*/.idea
 
 build
 cmake-build-debug
 cmake-build-release
+.idea
 
 # Prerequisites
 *.d

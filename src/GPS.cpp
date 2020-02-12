@@ -1,5 +1,6 @@
 #include <GPS.hpp>
 #include <nmea.hpp>
+#include <unistd.h>
 
 GPS::GPS(const std::string &devname) {
     open(devname);
@@ -51,6 +52,24 @@ void GPS::update() {
     _available = false;
 }
 
+bool GPS::waitUntilAvailable(uint32_t timeout_in_ms, uint32_t sleeptime_in_ms) {
+    uint32_t counter = 0;
+    while (!available() && (timeout_in_ms == 0 || counter < timeout_in_ms)) {
+        usleep(sleeptime_in_ms * 1000);
+        counter += sleeptime_in_ms;
+    }
+    return available();
+}
+
+bool GPS::waitUntilOnline(uint32_t timeout_in_ms, uint32_t sleeptime_in_ms) {
+    uint32_t counter = 0;
+    while (!online() && (timeout_in_ms == 0 || counter < timeout_in_ms)) {
+        usleep(sleeptime_in_ms * 1000);
+        counter += sleeptime_in_ms;
+    }
+    return online();
+}
+
 double GPS::latitude() const {
     return _userdata.latitude;
 }
@@ -69,6 +88,14 @@ double GPS::speed() const {
 
 double GPS::course() const {
     return _userdata.course;
+}
+
+bool GPS::online() const {
+    return quality() != NO_FIX;
+}
+
+unsigned GPS::quality() const {
+    return _userdata.quality;
 }
 
 void GPS::process_messages() {

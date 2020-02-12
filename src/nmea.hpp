@@ -74,13 +74,13 @@ namespace nmea {
 
     int message_type(const std::string &message);
 
-    void parse_gpgga(const std::string &message, gps_data &info);
+    void parse_gpgga(const std::string &message, gps_data_t &info);
 
-    void parse_gprmc(const std::string &message, gps_data &info);
+    void parse_gprmc(const std::string &message, gps_data_t &info);
 
-    void parse_gpzda(const std::string &message, gps_data &info);
+    void parse_gpzda(const std::string &message, gps_data_t &info);
 
-    void parse_gpgsa(const std::string &message, gps_data &info);
+    void parse_gpgsa(const std::string &message, gps_data_t &info);
 
 }
 

@@ -1,9 +1,9 @@
 #ifndef __GPS_DATA_HPP
 #define __GPS_DATA_HPP
 
-struct gps_data {
+struct gps_data_t {
 
-    gps_data() = default;
+    gps_data_t() = default;
 
     // [0..23]
     unsigned hours = 0;

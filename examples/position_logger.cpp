@@ -24,16 +24,20 @@ int main(int argc, const char *argv[]) {
     gps.open(devname);
     gps.start();
 
-    if (!gps.isOpen()) {
-        std::cout << "cannot connect to gpsd" << std::endl;
+    if (!gps.isOpen() || !gps.isStarted()) {
+        std::cout << "failed to connect to gps device" << std::endl;
         exit(EXIT_FAILURE);
     }
 
+    // wait until gps is fixed
+    if (!gps.online()) {
+        std::cout << "waiting to get GPS fix..." << std::endl;
+        gps.waitUntilOnline(GPS::NO_TIMEOUT);
+    }
     std::cout << "Logging GPS location" << std::endl;
     std::cout << "Press Ctrl+C to stop" << std::endl;
     while (flag) {
-        while (!gps.available())
-            usleep(250);
+        gps.waitUntilAvailable(GPS::NO_TIMEOUT);
         gps.update();
         std::cout << "latitude=" << gps.latitude() << ", longitude=" << gps.longitude() << std::endl;
     }
