@@ -10,15 +10,16 @@ static inline  bool starts_with(const std::string &str1, const std::string &str2
 
 static double gps_deg_dec(double deg_point) {
     double ddeg;
-    double sec = modf(deg_point, &ddeg)*60;
-    int deg = (int)(ddeg/100);
-    int min = (int)(deg_point-(deg*100));
+    double sec = modf(deg_point, &ddeg);
+    double deg = (double) (int(ddeg) / 100);
+    double min = (double) int(deg_point-(deg*100));
 
+    /*
     double absdlat = round(deg * 1000000.);
     double absmlat = round(min * 1000000.);
-    double absslat = round(sec * 1000000.);
+    double absslat = round(sec * 1000000.);*/
 
-    return round(absdlat + (absmlat/60) + (absslat/3600)) /1000000;
+    return deg + (min + sec) / 60.0;
 }
 
 bool nmea::valid_checksum(const std::string &message) {
