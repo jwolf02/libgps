@@ -6,51 +6,67 @@
 #include <atomic>
 #include <serial.hpp>
 #include <gps_data.hpp>
+#include <thread>
 #include <mutex>
+#include <cmath>
+#include <chrono>
 
 class GPS {
 public:
 
-	// default contructor
-	GPS() = default;
+    GPS() = default;
 
-	explicit GPS(const std::string &devname);
+    explicit GPS(const std::string &devname);
 
-	~GPS();
+    GPS(const GPS &gps) = delete;
 
-	void open(const std::string &devname);
+    ~GPS();
 
-	void close();
+    GPS& operator=(const GPS &gps) = delete;
 
-	bool isOpen() const;
+    void open(const std::string &devname);
+
+    void close();
 
     void start();
 
     void stop();
 
+    bool isOpen() const;
+
     bool isStarted() const;
 
     bool available() const;
 
-    void update(gps_data &data);
+    void update();
 
-    void read(gps_data &data);
+    double latitude() const;
+
+    double longitude() const;
+
+    double altitude() const;
+
+    double speed() const;
+
+    double course() const;
 
 private:
 
-    void process_nmea_messages();
+    void process_messages();
 
-	std::thread _t;
+    gps_data _userdata; // user accesses this
+
+    gps_data _data; // internal updates get here
+
+    serial_t _serial = 0;
+
+    std::thread _thread;
+
+    std::mutex _mtx;
 
     std::atomic_bool _running = { false };
 
-	gps_data _data;
-
-	std::atomic_bool _updated = { false };
-
-	std::mutex _mtx;
-
-    serial_t _serial = 0;
+    std::atomic_bool _available = { false };
 
 };
 

@@ -2,41 +2,40 @@
 #include <cstdlib>
 #include <GPS.hpp>
 #include <csignal>
+#include <unistd.h>
 
-bool flag = true;
+volatile bool flag = true;
+
+GPS gps;
 
 void sig_handler(int signum) {
     if (signum == SIGINT) {
-        flag = false;
+        gps.close();
+        exit(EXIT_SUCCESS);
     }
 }
 
 int main(int argc, const char *argv[]) {
-    std::string dev("/dev/ttyAMAO");
-    if (argc > 1) {
-        std::string arg(argv[1]);
-        if (arg == "--help") {
-            std::cout << "Usage: " << argv[0] << " [UART device (default=/dev/ttyAMAO)]" << std::endl;
-            return EXIT_SUCCESS;
-        } else {
-            dev = arg;
-        }
-    }
 
     signal(SIGINT, sig_handler);
 
-    GPS gps(dev);
+    std::string devname = argc > 1 ? argv[1] : "/dev/ttyAMA0";
+
+    gps.open(devname);
     gps.start();
 
-    gps_data data;
+    if (!gps.isOpen()) {
+        std::cout << "cannot connect to gpsd" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
     std::cout << "Logging GPS location" << std::endl;
     std::cout << "Press Ctrl+C to stop" << std::endl;
     while (flag) {
-        if (gps.available()) {
-            gps.update(data);
-        }
-        std::cout << '\r' << data.latitude << ' ' << data.longitude << std::flush;
+        while (!gps.available())
+            usleep(250);
+        gps.update();
+        std::cout << "latitude=" << gps.latitude() << ", longitude=" << gps.longitude() << std::endl;
     }
 
     return EXIT_SUCCESS;

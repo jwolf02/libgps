@@ -21,23 +21,15 @@ static double gps_deg_dec(double deg_point) {
     return round(absdlat + (absmlat/60) + (absslat/3600)) /1000000;
 }
 
-void nmea::parse_message(const std::string &message, gps_data &info) {
-    if (starts_with(message, NMEA_GPGGA)) {
-        nmea::parse_gpgga(message, info);
-    } else if (starts_with(message, NMEA_GPRMC)) {
-        nmea::parse_gprmc(message, info);
-    } else if (starts_with(message, NMEA_GPZDA)) {
-        nmea::parse_gpzda(message, info);
-    } else {
-        // throw error or something
-    }
-}
-
 bool nmea::valid_checksum(const std::string &message) {
     auto checksum = (uint8_t) strtol(strchr(message.c_str(), '*') + 1, nullptr, 16);
 
     uint8_t sum = 0;
-    for (auto ptr = message.c_str() + 1; *ptr != '*'; ++ptr) {
+    const char *end = strchr(message.c_str(), '*');
+    if (end == nullptr)
+        return false;
+
+    for (auto ptr = message.c_str() + 1; ptr != end; ++ptr) {
         sum = sum xor *ptr;
     }
 
@@ -51,6 +43,8 @@ int nmea::message_type(const std::string & message) {
         return nmea::GPRMC;
     } else if (starts_with(message, NMEA_GPZDA)) {
         return nmea::GPZDA;
+    } else if (starts_with(message, NMEA_GPGSA)) {
+        return nmea::GPGSA;
     } else {
         return nmea::UNDEFINED;
     }
@@ -137,4 +131,8 @@ void nmea::parse_gpzda(const std::string &message, gps_data &info) {
 
     p = strchr(p, ',') + 1;
     info.timezone = strtoul(p, nullptr, 10);
+}
+
+void nmea::parse_gpgsa(const std::string & message, struct gps_data & info) {
+    // TODO: implement
 }

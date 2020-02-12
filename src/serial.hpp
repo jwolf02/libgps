@@ -13,7 +13,7 @@ namespace serial {
 
     void println(serial_t s, const std::string &line);
 
-    void readln(serial_t s, std::string &line);
+    void readln(serial_t s, std::string &line, uint32_t timeout_in_ms=1000);
 
     void close(serial_t s);
 

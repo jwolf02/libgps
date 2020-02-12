@@ -58,6 +58,7 @@ void nmea_parse_gprmc(char *, gprmc_t *);
 #define NMEA_GPGGA      "$GPGGA"
 #define NMEA_GPRMC      "$GPRMC"
 #define NMEA_GPZDA      "$GPZDA"
+#define NMEA_GPGSA      "$GPGSA"
 
 namespace nmea {
 
@@ -65,20 +66,21 @@ namespace nmea {
         UNDEFINED = 0,
         GPGGA,
         GPRMC,
-        GPZDA
+        GPZDA,
+        GPGSA
     };
 
     bool valid_checksum(const std::string &message);
 
     int message_type(const std::string &message);
 
-    void parse_message(const std::string &message, gps_data &info);
-
     void parse_gpgga(const std::string &message, gps_data &info);
 
     void parse_gprmc(const std::string &message, gps_data &info);
 
     void parse_gpzda(const std::string &message, gps_data &info);
+
+    void parse_gpgsa(const std::string &message, gps_data &info);
 
 }
 

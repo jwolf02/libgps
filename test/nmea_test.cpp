@@ -10,7 +10,7 @@ static void test_gpgga() {
 
     ASSERT(nmea::valid_checksum(gpgga_message));
     ASSERT_EQUAL(nmea::message_type(gpgga_message), nmea::GPGGA);
-    nmea::parse_message(gpgga_message, data);
+    nmea::parse_gpgga(gpgga_message, data);
 
     ASSERT_EQUAL(0, data.hours);
     ASSERT_EQUAL(10, data.minutes);
@@ -28,7 +28,7 @@ static void test_gprmc() {
 
     ASSERT(nmea::valid_checksum(gprmc_message));
     ASSERT_EQUAL(nmea::message_type(gprmc_message), nmea::GPRMC);
-    nmea::parse_message(gprmc_message, data);
+    nmea::parse_gprmc(gprmc_message, data);
 
     ASSERT_EQUAL(8, data.hours);
     ASSERT_EQUAL(18, data.minutes);
@@ -45,7 +45,7 @@ static void test_gpzda() {
 
     ASSERT(nmea::valid_checksum(gpzda_message));
     ASSERT_EQUAL(nmea::message_type(gpzda_message), nmea::GPZDA);
-    nmea::parse_message(gpzda_message, data);
+    nmea::parse_gpzda(gpzda_message, data);
 
     ASSERT_EQUAL(23, data.hours);
     ASSERT_EQUAL(59, data.minutes);

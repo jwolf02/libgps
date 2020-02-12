@@ -12,7 +12,7 @@ set(SOURCES 			src/GPS.hpp
 						src/serial.cpp
 						src/nmea.hpp
 						src/nmea.cpp
-						src/gps_data.hpp test/nmea_test.cpp test/test.hpp)
+						src/gps_data.hpp)
 
 add_library(gps STATIC ${SOURCES})
 target_include_directories(gps PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)

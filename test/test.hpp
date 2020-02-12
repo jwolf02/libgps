@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 
-#define ASSERT( condition )                             \
+#define ASSERT(condition)                                           \
 {                                                                   \
   if( !( condition ) )                                              \
   {                                                                 \
@@ -18,7 +18,7 @@
   }                                                                 \
 }
 
-#define ASSERT_EQUAL(x, y)                                  \
+#define ASSERT_EQUAL(x, y)                                          \
 {                                                                   \
   if( ( x ) != ( y ) )                                              \
   {                                                                 \
@@ -35,7 +35,7 @@
   }                                                                 \
 }
 
-#define ASSERT_EQUAL_FLOAT(x, y)                                  \
+#define ASSERT_EQUAL_FLOAT(x, y)                                    \
 {                                                                   \
   if(std::abs(x - y) > 0.001)                                       \
   {                                                                 \
