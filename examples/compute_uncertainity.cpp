@@ -17,7 +17,10 @@ void sig_handler(int signum) {
 }
 
 int main(int argc, const char *argv[]) {
-
+    if (argc > 1 && std::string(argv[1]) == "--help") {
+        std::cout << "Usage: " << argv[0] << " [UART device] [num_samples]" << std::endl;
+        exit(EXIT_SUCCESS);
+    }
     std::string devname = argc > 1 ? argv[1] : "/dev/ttyAMA0";
     uint32_t num_samples = argc > 2 ? strtol(argv[2], nullptr, 10) : 100;
     std::cout << "taking " << num_samples << " samples" << std::endl;
@@ -66,8 +69,8 @@ int main(int argc, const char *argv[]) {
         max_dist = std::max(max_dist, dist);
     }
 
-    printf("latitude (mean)=%.8f longitude (mean)=%.8f\n", lat_mean, lon_mean);
-    printf("distance (mean)=%.3f meters distance (max)=%.3f meters\n", mean_dist / num_samples, max_dist);
+    printf("latitude (mean)=%.8f, longitude (mean)=%.8f\n", lat_mean, lon_mean);
+    printf("distance (mean)=%.3f meters, distance (max)=%.3f meters\n", mean_dist / num_samples, max_dist);
 
     return EXIT_SUCCESS;
 }

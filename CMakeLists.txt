@@ -18,6 +18,8 @@ add_library(gps STATIC ${SOURCES})
 target_include_directories(gps PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(gps PUBLIC m pthread)
 
+install(TARGETS gps DESTINATION /usr/lib)
+
 add_executable(position_logger examples/position_logger.cpp)
 target_include_directories(position_logger PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(position_logger PUBLIC gps)
