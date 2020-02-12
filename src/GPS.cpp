@@ -93,6 +93,7 @@ bool GPS::waitUntilOnline(uint32_t timeout_in_ms, uint32_t sleeptime_in_ms) {
     while (!online() && (timeout_in_ms == 0 || counter < timeout_in_ms)) {
         usleep(sleeptime_in_ms * 1000);
         counter += sleeptime_in_ms;
+        update();
     }
     return online();
 }
