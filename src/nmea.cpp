@@ -21,6 +21,17 @@ static double gps_deg_dec(double deg_point) {
     return round(absdlat + (absmlat/60) + (absslat/3600)) /1000000;
 }
 
+static double deg_to_dec(const double ddmm_mmmm) {
+    if (ddmm_mmmm == 0.0)
+        return 0.0;
+    double ddmm;
+    const double mmmm = std::modf(ddmm_mmmm, &ddmm);
+    const double mm = std::fmod(ddmm, 100.0);
+    const double dd = (ddmm - mm) / 100.0;
+
+    return dd + (mm + mmmm) * 60.0;
+}
+
 bool nmea::valid_checksum(const std::string &message) {
     auto checksum = (uint8_t) strtol(strchr(message.c_str(), '*') + 1, nullptr, 16);
 

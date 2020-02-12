@@ -49,7 +49,7 @@ void serial::readln(serial_t uart, std::string &line, uint32_t timeout_in_ms) {
     do {
 	    // wait for the file descriptor to
 	    // become readable
-        auto ret = select(1, &set, nullptr, nullptr, &tv);
+        auto ret = select(FD_SETSIZE, &set, nullptr, nullptr, &tv);
         switch (ret) {
             case -1: { // an error occurred
                 ERROR;
