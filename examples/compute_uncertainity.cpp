@@ -33,6 +33,8 @@ int main(int argc, const char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
+    gps.waitUntilOnline(GPS::NO_TIMEOUT);
+
     std::cout << "samples: " << 0 << std::flush;
     for (int i = 0; i < num_samples; ++i) {
         while (!gps.available()) {

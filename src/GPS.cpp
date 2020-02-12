@@ -118,7 +118,7 @@ double GPS::course() const {
 }
 
 bool GPS::online() const {
-    return quality() != NO_FIX;
+    return quality() != NO_FIX && latitude() != 0.0 && longitude() != 0.0;
 }
 
 unsigned GPS::quality() const {
