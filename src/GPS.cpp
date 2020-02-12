@@ -161,7 +161,7 @@ void GPS::process_messages() {
                     nmea::parse_gpzda(message, _data);
                     break;
                 } case nmea::GPGSV: {
-                    nmea::parse_gpgsv(message, _data);
+                    //nmea::parse_gpgsv(message, _data);
                     break;
                 }
             }
