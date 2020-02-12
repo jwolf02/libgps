@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD	11)
 
 set(CMAKE_CXX_FLAGS		"${CMAKE_CXX_FLAGS} -O3 -Wall -mtune=native -march=native")
 
-set(SOURCES 			src/GPS.hpp
+set(SOURCES				src/GPS.hpp
 						src/GPS.cpp
 						src/serial.hpp
 						src/serial.cpp
