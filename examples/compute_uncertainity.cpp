@@ -19,7 +19,7 @@ void sig_handler(int signum) {
 int main(int argc, const char *argv[]) {
 
     std::string devname = argc > 1 ? argv[1] : "/dev/ttyAMA0";
-    int num_samples = argc > 2 ? strtol(argv[2], nullptr, 10) : 100;
+    uint32_t num_samples = argc > 2 ? strtol(argv[2], nullptr, 10) : 100;
     std::cout << "taking " << num_samples << " samples" << std::endl;
 
     std::vector<double> lats(num_samples);
@@ -33,18 +33,16 @@ int main(int argc, const char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
+    // wait for useful data forever
     gps.waitUntilOnline(GPS::NO_TIMEOUT);
 
     std::cout << "samples: " << 0 << std::flush;
     for (int i = 0; i < num_samples; ++i) {
+        // wait until new data becomes available
         gps.waitUntilAvailable(GPS::NO_TIMEOUT);
         gps.update();
-        if (gps.latitude() == 0 && gps.longitude() == 0) {
-            i -= 1;
-            continue;
-        }
-        lats[i] = (gps.latitude());
-        lons[i] = (gps.longitude());
+        lats[i] = gps.latitude();
+        lons[i] = gps.longitude();
         std::cout << '\r' << "samples: " << (i + 1)<< std::flush;
     }
     std::cout << std::endl;
