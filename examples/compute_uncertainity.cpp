@@ -16,15 +16,6 @@ void sig_handler(int signum) {
     }
 }
 
-template <typename It>
-double sum(It begin, It end, double init=0) {
-    double accum = init;
-    for (auto it = begin; it != end; ++it) {
-        accum = accum + *it;
-    }
-    return accum;
-}
-
 int main(int argc, const char *argv[]) {
 
     std::string devname = argc > 1 ? argv[1] : "/dev/ttyAMA0";
@@ -54,8 +45,12 @@ int main(int argc, const char *argv[]) {
     }
     std::cout << std::endl;
 
-    double lat_mean = sum(lats.begin(), lats.end()) / num_samples;
-    double lon_mean = sum(lons.begin(), lons.end()) / num_samples;
+    double lat_mean = 0;
+    double lon_mean = 0;
+    for (int i = 0; i < num_samples; ++i) {
+        lat_mean += lats[i] / num_samples;
+        lon_mean += lons[i] / num_samples;
+    }
 
     double s = 0;
     for (int i = 0; i < num_samples; ++i) {
