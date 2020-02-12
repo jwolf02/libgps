@@ -73,13 +73,13 @@ void nmea::parse_gpgga(const std::string &message, gps_data_t &info) {
     const double lat = std::strtod(p, nullptr);
 
     p = strchr(p, ',') + 1;
-    info.latitude = gps_deg_dec(p[0] == 'N' ? lat : -1.0 * lat);
+    info.latitude = deg_to_dec(lat) * (p[0] == 'N' ? 1.0 : -1.0);
 
     p = strchr(p, ',') + 1;
     const double lon = std::strtod(p, nullptr);
 
     p = strchr(p, ',') + 1;
-    info.longitude = gps_deg_dec(p[0] == 'E' ? lon : -1.0 * lon);
+    info.longitude = deg_to_dec(lon) * (p[0] == 'E' ? 1.0 : -1.0);
 
     p = strchr(p, ',') + 1;
     info.quality = strtoul(p, nullptr, 10);
