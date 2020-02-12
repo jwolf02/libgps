@@ -1,6 +1,24 @@
 #ifndef __GPS_DATA_HPP
 #define __GPS_DATA_HPP
 
+struct satellite {
+
+    satellite() = default;
+
+    // SV PRN
+    unsigned sv_prn = 0;
+
+    // in degrees [0..90]
+    unsigned elevation = 0;
+
+    // in degrees [0..359]
+    unsigned azimuth = 0;
+
+    // in dB [0..99]
+    unsigned snr = 0;
+
+};
+
 struct gps_data_t {
 
     gps_data_t() = default;
@@ -54,6 +72,9 @@ struct gps_data_t {
 
     // in degrees
     double course = 0.0;
+
+    // up to 4 connected satellites
+    satellite satellites[4];
 
 };
 

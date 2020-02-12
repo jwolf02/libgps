@@ -1,6 +1,30 @@
 #include <GPS.hpp>
 #include <nmea.hpp>
 #include <unistd.h>
+#include <cstring>
+#include <cmath>
+
+#define EARTH_RADIUS    (63671370.)
+#define RADIANS(x)      ((x) * M_PI / 180.0)
+#define DEGREES(x)      ((x) * 180.0 / M_PI)
+
+template <typename T>
+static constexpr T sqr(T x) {
+    return x * x;
+}
+
+double GPS::distance(double lat0, double lon0, double lat1, double lon1) {
+    lat0 = RADIANS(lat0);
+    lon0 = RADIANS(lon0);
+    lat1 = RADIANS(lat1);
+    lon1 = RADIANS(lon1);
+
+    double d_lat = (lat1 - lat0);
+    double d_lon = (lon1 - lon0);
+    double a = sqr(std::sin(d_lat / 2.0)) + std::cos(lat1) * sqr(std::sin(d_lon / 2.0));
+    double c = 2.0 * std::atan2(std::sqrt(a), std::sqrt(1.0 - a));
+    return EARTH_RADIUS * c;
+}
 
 GPS::GPS(const std::string &devname) {
     open(devname);
@@ -26,7 +50,7 @@ void GPS::close() {
 
 void GPS::start() {
     if (_running)
-        throw std::runtime_error("gps device already started");
+        throw std::runtime_error("gps device already running");
     _running = true;
     _thread = std::thread(&GPS::process_messages, this);
 }
@@ -52,7 +76,8 @@ bool GPS::available() const {
 
 void GPS::update() {
     std::lock_guard<std::mutex> lock(_mtx);
-    _userdata = _data;
+    // _userdata = _data;
+    memcpy(&_userdata, &_data, sizeof(gps_data_t));
     _available = false;
 }
 
@@ -131,8 +156,8 @@ void GPS::process_messages() {
                 } case nmea::GPZDA: {
                     nmea::parse_gpzda(message, _data);
                     break;
-                } case nmea::GPGSA: {
-                    nmea::parse_gpgsa(message, _data);
+                } case nmea::GPGSV: {
+                    nmea::parse_gpgsv(message, _data);
                     break;
                 }
             }

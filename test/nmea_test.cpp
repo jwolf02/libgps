@@ -15,8 +15,8 @@ static void test_gpgga() {
     ASSERT_EQUAL(0, data.hours);
     ASSERT_EQUAL(10, data.minutes);
     ASSERT_EQUAL(38, data.seconds);
-    ASSERT_EQUAL_FLOAT(41.41500000, data.latitude);
-    ASSERT_EQUAL_FLOAT(-81.86138889, data.longitude);
+    ASSERT_EQUAL_FLOAT(41.414938, data.latitude);
+    ASSERT_EQUAL_FLOAT(-81.861396, data.longitude);
     ASSERT_EQUAL(2, data.quality);
     ASSERT_EQUAL(4, data.satellites_connected);
     ASSERT_EQUAL_FLOAT(354.682, data.altitude);
@@ -24,7 +24,7 @@ static void test_gpgga() {
 
 static void test_gprmc() {
     gps_data_t data;
-    const std::string gprmc_message("$GPRMC,081836,A,4124.8963,S,08151.6838,E,000.05,360.0,130998,011.3,E*59");
+    const std::string gprmc_message("$GPRMC,081836,A,9000.0100,S,01234.5678,E,000.05,360.0,130998,011.3,E*56");
 
     ASSERT(nmea::valid_checksum(gprmc_message));
     ASSERT_EQUAL(nmea::message_type(gprmc_message), nmea::GPRMC);
@@ -33,8 +33,8 @@ static void test_gprmc() {
     ASSERT_EQUAL(8, data.hours);
     ASSERT_EQUAL(18, data.minutes);
     ASSERT_EQUAL(36, data.seconds);
-    ASSERT_EQUAL_FLOAT(-41.41500000, data.latitude);
-    ASSERT_EQUAL_FLOAT(81.86138889, data.longitude);
+    ASSERT_EQUAL_FLOAT(-90.000166, data.latitude);
+    ASSERT_EQUAL_FLOAT(12.576130, data.longitude);
     ASSERT_EQUAL_FLOAT(0.05 * 1.852, data.speed)
     ASSERT_EQUAL_FLOAT(360.0, data.course);
 }
@@ -56,11 +56,43 @@ static void test_gpzda() {
     ASSERT_EQUAL(1, data.timezone);
 }
 
+static void test_gpgsv() {
+    gps_data_t data;
+    const std::string gpgsv_message("$GPGSV,3,1,11,03,03,111,00,04,15,270,00,06,01,010,00,13,06,292,00*74");
+
+    ASSERT(nmea::valid_checksum(gpgsv_message));
+    ASSERT_EQUAL(nmea::message_type(gpgsv_message), nmea::GPGSV);
+    nmea::parse_gpgsv(gpgsv_message, data);
+
+    ASSERT_EQUAL(11, data.satellites_in_view);
+
+    ASSERT_EQUAL(3, data.satellites[0].sv_prn);
+    ASSERT_EQUAL(3, data.satellites[0].elevation);
+    ASSERT_EQUAL(111, data.satellites[0].azimuth);
+    ASSERT_EQUAL(0, data.satellites[0].snr);
+
+    ASSERT_EQUAL(4, data.satellites[1].sv_prn);
+    ASSERT_EQUAL(15, data.satellites[1].elevation);
+    ASSERT_EQUAL(270, data.satellites[1].azimuth);
+    ASSERT_EQUAL(0, data.satellites[1].snr);
+
+    ASSERT_EQUAL(6, data.satellites[2].sv_prn);
+    ASSERT_EQUAL(1, data.satellites[2].elevation);
+    ASSERT_EQUAL(10, data.satellites[2].azimuth);
+    ASSERT_EQUAL(0, data.satellites[2].snr);
+
+    ASSERT_EQUAL(13, data.satellites[3].sv_prn);
+    ASSERT_EQUAL(6, data.satellites[3].elevation);
+    ASSERT_EQUAL(292, data.satellites[3].azimuth);
+    ASSERT_EQUAL(0, data.satellites[3].snr);
+}
+
 int main(int argc, const char *argv[]) {
 
     test_gpgga();
     test_gprmc();
     test_gpzda();
+    test_gpgsv();
 
     std::cout << "test finished successfully" << std::endl;
 

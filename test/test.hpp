@@ -37,7 +37,7 @@
 
 #define ASSERT_EQUAL_FLOAT(x, y)                                    \
 {                                                                   \
-  if(std::abs(x - y) > 0.001)                                       \
+  if(std::abs(x - y) > 0.000001)                                    \
   {                                                                 \
     throw std::runtime_error(   std::string( __FILE__ )             \
                               + std::string( ":" )                  \

@@ -22,6 +22,10 @@ add_executable(position_logger examples/position_logger.cpp)
 target_include_directories(position_logger PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(position_logger PUBLIC gps)
 
+add_executable(compute_uncertainity examples/compute_uncertainity.cpp)
+target_include_directories(compute_uncertainity PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(compute_uncertainity PUBLIC gps)
+
 enable_testing()
 
 add_executable(nmea_test test/nmea_test.cpp test/test.hpp)

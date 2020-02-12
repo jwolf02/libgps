@@ -9,9 +9,9 @@ static inline  bool starts_with(const std::string &str1, const std::string &str2
 }
 
 static double gps_deg_dec(double deg_point) {
-    double min = std::fmod(deg_point, 100.0);
-    double deg = (deg_point - min) / 100.0;
-    return deg + min / 60.0;
+    // nmea: ddmm.mmmm
+    const double min = std::fmod(deg_point, 100.0);
+    return ((deg_point - min) / 100.0) + (min / 60.0);
     /*
     double ddeg;
     double sec = modf(deg_point, &ddeg);
@@ -47,8 +47,8 @@ int nmea::message_type(const std::string & message) {
         return nmea::GPRMC;
     } else if (starts_with(message, NMEA_GPZDA)) {
         return nmea::GPZDA;
-    } else if (starts_with(message, NMEA_GPGSA)) {
-        return nmea::GPGSA;
+    } else if (starts_with(message, NMEA_GPGSV)) {
+        return nmea::GPGSV;
     } else {
         return nmea::UNDEFINED;
     }
@@ -123,7 +123,6 @@ void nmea::parse_gpzda(const std::string &message, gps_data_t &info) {
     info.minutes = std::strtoul(std::string({ p[2], p[3], '\0' }).c_str(), nullptr, 10);
     info.seconds = std::strtoul(std::string({ p[4], p[5], '\0' }).c_str(), nullptr, 10);
 
-
     p = strchr(p, ',') + 1;
     info.day = strtoul(p, nullptr, 10);
 
@@ -137,6 +136,27 @@ void nmea::parse_gpzda(const std::string &message, gps_data_t &info) {
     info.timezone = strtoul(p, nullptr, 10);
 }
 
-void nmea::parse_gpgsa(const std::string & message, struct gps_data_t & info) {
-    // TODO: implement
+void nmea::parse_gpgsv(const std::string & message, struct gps_data_t & info) {
+    const char *p = message.c_str();
+
+    p = strchr(p, ',') + 1; // skip number of messages
+    p = strchr(p, ',') + 1; // skip message number
+    p = strchr(p, ',') + 1;
+    info.satellites_in_view = strtoul(p, nullptr, 10);
+
+    for (unsigned i = 0; i < 4; ++i) {
+        auto &sat = info.satellites[i];
+
+        p = strchr(p, ',') + 1;
+        sat.sv_prn = strtoul(p, nullptr, 10);
+
+        p = strchr(p, ',') + 1;
+        sat.elevation = strtoul(p, nullptr, 10);
+
+        p = strchr(p, ',') + 1;
+        sat.azimuth = strtoul(p, nullptr, 10);
+
+        p = strchr(p, ',') + 1;
+        sat.snr = strtoul(p, nullptr, 10);;
+    }
 }

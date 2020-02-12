@@ -20,7 +20,13 @@ public:
         DIFF_GPS_FIX = 2
     };
 
+    // no timeout when waiting
     static constexpr uint32_t NO_TIMEOUT = 0;
+
+    /*
+     * compute the distance between two gps coordinates using the haversine distance
+     */
+    static double distance(double lat0, double lon0, double lat1, double lon1);
 
     GPS() = default;
 
