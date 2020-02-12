@@ -8,6 +8,7 @@
 #define NMEA_GPRMC      "$GPRMC"
 #define NMEA_GPZDA      "$GPZDA"
 #define NMEA_GPGSV      "$GPGSV"
+#define NMEA_GPGLL      "$GPGLL"
 
 namespace nmea {
 
@@ -16,6 +17,7 @@ namespace nmea {
         GPGGA,
         GPRMC,
         GPZDA,
+        GPGLL,
         GPGSV
     };
 
@@ -28,6 +30,8 @@ namespace nmea {
     void parse_gprmc(const std::string &message, gps_data_t &info);
 
     void parse_gpzda(const std::string &message, gps_data_t &info);
+
+    void parse_gpgll(const std::string &message, gps_data_t &info);
 
     void parse_gpgsv(const std::string &message, gps_data_t &info);
 

@@ -136,6 +136,27 @@ void nmea::parse_gpzda(const std::string &message, gps_data_t &info) {
     info.timezone = strtoul(p, nullptr, 10);
 }
 
+void nmea::parse_gpgll(const std::string & message, struct gps_data_t & info) {
+    const char *p = message.c_str();
+
+    p = strchr(p, ',') + 1;
+    const double lat = std::strtod(p, nullptr);
+
+    p = strchr(p, ',') + 1;
+    info.latitude = gps_deg_dec(p[0] == 'N' ? lat : -1.0 * lat);
+
+    p = strchr(p, ',') + 1;
+    const double lon = std::strtod(p, nullptr);
+
+    p = strchr(p, ',') + 1;
+    info.longitude = gps_deg_dec(p[0] == 'E' ? lon : -1.0 * lon);
+
+    p = strchr(p, ',') + 1;
+    info.hours = std::strtoul(std::string({ p[0], p[1], '\0' }).c_str(), nullptr, 10);
+    info.minutes = std::strtoul(std::string({ p[2], p[3], '\0' }).c_str(), nullptr, 10);
+    info.seconds = std::strtoul(std::string({ p[4], p[5], '\0' }).c_str(), nullptr, 10);
+}
+
 void nmea::parse_gpgsv(const std::string & message, struct gps_data_t & info) {
     const char *p = message.c_str();
 

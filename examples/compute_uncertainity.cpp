@@ -48,9 +48,12 @@ int main(int argc, const char *argv[]) {
     double lat_mean = 0;
     double lon_mean = 0;
     for (int i = 0; i < num_samples; ++i) {
-        lat_mean += lats[i] / num_samples;
-        lon_mean += lons[i] / num_samples;
+        lat_mean += lats[i];
+        lon_mean += lons[i];
     }
+
+    lat_mean /= num_samples;
+    lon_mean /= num_samples;
 
     double s = 0;
     for (int i = 0; i < num_samples; ++i) {

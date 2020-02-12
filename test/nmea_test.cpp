@@ -87,12 +87,20 @@ static void test_gpgsv() {
     ASSERT_EQUAL(0, data.satellites[3].snr);
 }
 
+void test_gpgll() {
+    gps_data_t data;
+    const std::string gpgsv_message("$GPGSV,3,1,11,03,03,111,00,04,15,270,00,06,01,010,00,13,06,292,00*74");
+
+    // TODO: implement
+}
+
 int main(int argc, const char *argv[]) {
 
     test_gpgga();
     test_gprmc();
     test_gpzda();
     test_gpgsv();
+    test_gpgll();
 
     std::cout << "test finished successfully" << std::endl;
 
