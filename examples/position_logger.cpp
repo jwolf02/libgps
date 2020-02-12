@@ -3,6 +3,7 @@
 #include <GPS.hpp>
 #include <csignal>
 #include <unistd.h>
+#include <cstdio>
 
 volatile bool flag = true;
 
@@ -36,7 +37,7 @@ int main(int argc, const char *argv[]) {
             usleep(250000);
         }
         gps.update();
-        std::cout << "latitude=" << gps.latitude() << ", longitude=" << gps.longitude() << std::endl;
+        printf("latitude=%.8f longitude=%.8f\n", gps.latitude(), gps.longitude());
     }
 
     return EXIT_SUCCESS;
