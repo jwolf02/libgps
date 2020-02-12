@@ -21,17 +21,6 @@ static double gps_deg_dec(double deg_point) {
     return round(absdlat + (absmlat/60) + (absslat/3600)) /1000000;
 }
 
-static double deg_to_dec(const double ddmm_mmmm) {
-    if (ddmm_mmmm == 0.0)
-        return 0.0;
-    double ddmm;
-    const double mmmm = std::modf(ddmm_mmmm, &ddmm);
-    const double mm = std::fmod(ddmm, 100.0);
-    const double dd = (ddmm - mm) / 100.0;
-
-    return dd + (mm + mmmm) * 60.0;
-}
-
 bool nmea::valid_checksum(const std::string &message) {
     auto checksum = (uint8_t) strtol(strchr(message.c_str(), '*') + 1, nullptr, 16);
 
@@ -73,13 +62,13 @@ void nmea::parse_gpgga(const std::string &message, gps_data_t &info) {
     const double lat = std::strtod(p, nullptr);
 
     p = strchr(p, ',') + 1;
-    info.latitude = deg_to_dec(lat) * (p[0] == 'N' ? 1.0 : -1.0);
+    info.latitude = gps_deg_dec(p[0] == 'N' ? lat : -1.0 * lat);
 
     p = strchr(p, ',') + 1;
     const double lon = std::strtod(p, nullptr);
 
     p = strchr(p, ',') + 1;
-    info.longitude = deg_to_dec(lon) * (p[0] == 'E' ? 1.0 : -1.0);
+    info.longitude = gps_deg_dec(p[0] == 'E' ? lon : -1.0 * lon);
 
     p = strchr(p, ',') + 1;
     info.quality = strtoul(p, nullptr, 10);
