@@ -42,7 +42,7 @@ int main(int argc, const char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    std::cout << "samples: " << 0 << std::endl;
+    std::cout << "samples: " << 0 << std::flush;
     for (int i = 0; i < num_samples; ++i) {
         while (!gps.available()) {
             usleep(250000);
@@ -62,7 +62,7 @@ int main(int argc, const char *argv[]) {
         s += std::abs(GPS::distance(lats[i], lons[i], lat_mean, lon_mean));
     }
 
-    printf("latitude (mean)=%.8f longitude (mean)=%.8f distance (avg)=%0.6f\n", lat_mean, lon_mean, s / num_samples);
+    printf("latitude (mean)=%.8f longitude (mean)=%.8f distance (avg)=%.6f\n", lat_mean, lon_mean, s / num_samples);
 
     return EXIT_SUCCESS;
 }
