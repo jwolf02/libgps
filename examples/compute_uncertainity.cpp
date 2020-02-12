@@ -57,12 +57,17 @@ int main(int argc, const char *argv[]) {
     lat_mean /= num_samples;
     lon_mean /= num_samples;
 
-    double s = 0;
+    double mean_dist = 0.0;
+    double max_dist = -INFINITY;
+
     for (int i = 0; i < num_samples; ++i) {
-        s += std::abs(GPS::distance(lats[i], lons[i], lat_mean, lon_mean));
+        double dist = std::abs(GPS::distance(lats[i], lons[i], lat_mean, lon_mean));
+        mean_dist += dist;
+        max_dist = std::max(max_dist, dist);
     }
 
-    printf("latitude (mean)=%.8f longitude (mean)=%.8f distance (avg)=%.6f\n", lat_mean, lon_mean, s / num_samples);
+    printf("latitude (mean)=%.8f longitude (mean)=%.8f\n", lat_mean, lon_mean);
+    printf("distance (mean)=%.6f distance (max)=%.6f\n", mean_dist, max_dist);
 
     return EXIT_SUCCESS;
 }
