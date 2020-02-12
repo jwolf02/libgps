@@ -32,7 +32,8 @@ int main(int argc, const char *argv[]) {
     std::cout << "Logging GPS location" << std::endl;
     std::cout << "Press Ctrl+C to stop" << std::endl;
     while (flag) {
-        gps.waitUntilAvailable(GPS::NO_TIMEOUT);
+        while (!gps.available())
+            usleep(250);
         gps.update();
         std::cout << "latitude=" << gps.latitude() << ", longitude=" << gps.longitude() << std::endl;
     }
