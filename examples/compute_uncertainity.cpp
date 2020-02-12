@@ -35,10 +35,14 @@ int main(int argc, const char *argv[]) {
 
     std::cout << "samples: " << 0 << std::flush;
     for (int i = 0; i < num_samples; ++i) {
-        while (!gps.available() || (gps.longitude() == 0 && gps.latitude() == 0)) {
+        while (!gps.available()) {
             usleep(250000);
         }
         gps.update();
+        if (gps.latitude() == 0 && gps.longitude() == 0) {
+            i -= 1;
+            continue;
+        }
         lats.push_back(gps.latitude());
         lons.push_back(gps.longitude());
         std::cout << '\r' << "samples: " << (i + 1)<< std::flush;
