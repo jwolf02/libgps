@@ -66,13 +66,15 @@ public:
 
     unsigned quality() const;
 
+    void write(const std::string &command);
+
 private:
 
     void process_messages();
 
     gps_data_t _userdata; // user accesses this
 
-    gps_data_t _data; // internal updates get here
+    gps_data_t _data; // internal updates go here
 
     serial_t _serial = 0;
 

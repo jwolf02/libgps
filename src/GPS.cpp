@@ -11,6 +11,8 @@ GPS::~GPS() {
 }
 
 void GPS::open(const std::string & devname) {
+    if (isOpen())
+        close();
     _serial = serial::open(devname);
 }
 
@@ -23,6 +25,8 @@ void GPS::close() {
 }
 
 void GPS::start() {
+    if (_running)
+        throw std::runtime_error("gps device already started");
     _running = true;
     _thread = std::thread(&GPS::process_messages, this);
 }
@@ -98,15 +102,20 @@ unsigned GPS::quality() const {
     return _userdata.quality;
 }
 
+void GPS::write(const std::string &command) {
+    serial::println(_serial, command);
+};
+
 void GPS::process_messages() {
     std::string message;
-    message.resize(256);
 
     while (_running) {
         // read message from UART and check the checksum
         serial::readln(_serial, message);
         if (!nmea::valid_checksum(message)) {
-            throw std::runtime_error("invalid checksum encountered");
+            // most often the first message is read incompletely so we do not want
+            // to throw an error for that
+            continue;
         }
 
         // determine message type and parse accordingly

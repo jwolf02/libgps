@@ -29,11 +29,6 @@ int main(int argc, const char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    // wait until gps is fixed
-    if (!gps.online()) {
-        std::cout << "waiting to get GPS fix..." << std::endl;
-        gps.waitUntilOnline(GPS::NO_TIMEOUT);
-    }
     std::cout << "Logging GPS location" << std::endl;
     std::cout << "Press Ctrl+C to stop" << std::endl;
     while (flag) {
