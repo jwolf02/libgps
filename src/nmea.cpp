@@ -49,9 +49,12 @@ int nmea::message_type(const std::string & message) {
         return nmea::GPZDA;
     } else if (starts_with(message, NMEA_GPGSV)) {
         return nmea::GPGSV;
+    } else if (starts_with(message, NMEA_GPGLL)) {
+        return nmea::GPGLL;
     } else {
         return nmea::UNDEFINED;
     }
+
 }
 
 void nmea::parse_gpgga(const std::string &message, gps_data_t &info) {

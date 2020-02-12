@@ -132,6 +132,12 @@ public:
     unsigned quality() const;
 
     /***
+     * get frequency of location update in Hz
+     * @return
+     */
+    double locationUpdateFrequency() const;
+
+    /***
      * send a command to the gps device
      * @param command
      */
@@ -154,6 +160,10 @@ private:
     std::atomic_bool _running = { false }; // worker thread running flag
 
     std::atomic_bool _available = { false }; // update available
+
+    std::chrono::system_clock::time_point _last_location_update;
+
+    double _location_update_freq = 0.0;
 
 };
 

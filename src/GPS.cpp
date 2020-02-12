@@ -126,11 +126,13 @@ unsigned GPS::quality() const {
     return _userdata.quality;
 }
 
+double GPS::locationUpdateFrequency() const {
+    return _location_update_freq;
+}
+
 void GPS::write(const std::string &command) {
     serial::println(_serial, command);
 };
-
-#include <iostream>
 
 void GPS::process_messages() {
     std::string message;
@@ -147,7 +149,8 @@ void GPS::process_messages() {
         // determine message type and parse accordingly
         {
             std::lock_guard<std::mutex> lock(_mtx);
-            switch (nmea::message_type(message)) {
+            auto mtype = nmea::message_type(message);
+            switch (mtype) {
                 case nmea::GPGGA: {
                     nmea::parse_gpgga(message, _data);
                     break;
@@ -160,7 +163,17 @@ void GPS::process_messages() {
                 } case nmea::GPGSV: {
                     //nmea::parse_gpgsv(message, _data);
                     break;
+                } case nmea::GPGLL: {
+                    nmea::parse_gpgll(message, _data);
+                    break;
                 }
+                default: break;
+            }
+
+            if (mtype == nmea::GPGGA || mtype == nmea::GPRMC || mtype == nmea::GPGLL) {
+                auto tp = std::chrono::system_clock::now();
+                _location_update_freq = 1.0 / std::chrono::duration_cast<std::chrono::milliseconds>(tp - _last_location_update).count();
+                _last_location_update = tp;
             }
         }
         _available = true;
