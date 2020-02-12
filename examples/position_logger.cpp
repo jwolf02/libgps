@@ -33,7 +33,6 @@ int main(int argc, const char *argv[]) {
     std::cout << "Press Ctrl+C to stop" << std::endl;
     while (flag) {
         while (!gps.available()) {
-            std::cout << "waiting" << std::endl;
             usleep(250000);
         }
         gps.update();
