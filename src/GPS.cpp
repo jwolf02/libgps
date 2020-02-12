@@ -76,8 +76,8 @@ bool GPS::available() const {
 
 void GPS::update() {
     std::lock_guard<std::mutex> lock(_mtx);
-    // _userdata = _data;
-    memcpy(&_userdata, &_data, sizeof(gps_data_t));
+     _userdata = _data;
+    //memcpy(&_userdata, &_data, sizeof(gps_data_t));
     _available = false;
 }
 
