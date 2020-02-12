@@ -4,7 +4,7 @@
 #include <cstring>
 #include <cmath>
 
-#define EARTH_RADIUS    (63671370.)
+#define EARTH_RADIUS    (6367137.)
 #define RADIANS(x)      ((x) * M_PI / 180.0)
 #define DEGREES(x)      ((x) * 180.0 / M_PI)
 
@@ -14,11 +14,14 @@ double GPS::distance(double lat0, double lon0, double lat1, double lon1) {
     lat1 = RADIANS(lat1);
     lon1 = RADIANS(lon1);
 
+
     double d_lat = (lat1 - lat0);
     double d_lon = (lon1 - lon0);
-    double a = std::pow(std::sin(d_lat / 2.0), 2) + std::cos(lat0) * std::cos(lat1) * std::pow(std::sin(d_lon / 2.0), 2);
-    double c = 2.0 * std::asin(std::sqrt(a));
-    return EARTH_RADIUS * c;
+    /*double u = std::sin(d_lat / 2.0);
+    double v = std::sin(d_lon / 2.0);
+    double a = u * u + std::cos(lat0) * std::cos(lat1) * v * v;
+    return 2 * EARTH_RADIUS * 2.0 * std::atan2(std::sqrt(a), std::sqrt(1 - a)); */
+    return 2 * EARTH_RADIUS * asin(sqrt(sin(d_lat / 2) * sin(d_lat / 2) + cos(lat0) * cos(lat1) * sin(d_lon / 2) * sin(d_lon / 2)));
 }
 
 GPS::GPS(const std::string &devname) {

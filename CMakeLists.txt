@@ -32,4 +32,9 @@ add_executable(nmea_test test/nmea_test.cpp test/test.hpp)
 target_include_directories(nmea_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/test)
 target_link_libraries(nmea_test gps)
 
+add_executable(gps_test test/gps_test.cpp test/test.hpp)
+target_include_directories(gps_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/test)
+target_link_libraries(gps_test gps)
+
 add_test(NAME nmea_test COMMAND nmea_test)
+add_test(NAME gps_test COMMAND gps_test)
