@@ -35,7 +35,7 @@ int main(int argc, const char *argv[]) {
 
     std::cout << "samples: " << 0 << std::flush;
     for (int i = 0; i < num_samples; ++i) {
-        while (!gps.available()) {
+        while (!gps.available() || (gps.longitude() == 0 && gps.latitude() == 0)) {
             usleep(250000);
         }
         gps.update();
