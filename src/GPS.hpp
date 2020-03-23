@@ -38,7 +38,7 @@ public:
      */
     static double distance(double lat0, double lon0, double lat1, double lon1);
 
-    GPS() noexcept = default;
+    GPS() = default;
 
     /***
      * open a new gps device
