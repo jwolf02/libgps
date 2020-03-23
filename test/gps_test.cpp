@@ -1,7 +1,6 @@
 #include <iostream>
 #include <GPS.hpp>
-#include "test.hpp"
-
+#include <test.hpp>
 
 void test_distance() {
     ASSERT_EQUAL_FLOAT(GPS::distance(49.123, 8.123, 79.321, -12.345), 3451512.656966);

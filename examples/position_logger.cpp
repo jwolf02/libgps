@@ -11,6 +11,7 @@ GPS gps;
 
 void sig_handler(int signum) {
     if (signum == SIGINT) {
+        std::cout << "terminated" << std::endl;
         gps.close();
         exit(EXIT_SUCCESS);
     }
@@ -30,12 +31,16 @@ int main(int argc, const char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    gps.waitUntilOnline(GPS::NO_TIMEOUT);
+    while (!gps.online()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
 
     std::cout << "Logging GPS location" << std::endl;
     std::cout << "Press Ctrl+C to stop" << std::endl;
     while (flag) {
-        gps.waitUntilAvailable(GPS::NO_TIMEOUT);
+        while (!gps.available()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
         gps.update();
         printf("latitude=%.8f longitude=%.8f\n", gps.latitude(), gps.longitude());
     }

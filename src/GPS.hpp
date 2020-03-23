@@ -33,15 +33,12 @@ public:
         DIFF_GPS_FIX = 2
     };
 
-    // no timeout when waiting
-    static constexpr uint32_t NO_TIMEOUT = 0;
-
     /*
      * compute the distance between two gps coordinates using the haversine distance
      */
     static double distance(double lat0, double lon0, double lat1, double lon1);
 
-    GPS() = default;
+    GPS() noexcept = default;
 
     /***
      * open a new gps device
@@ -100,23 +97,6 @@ public:
      */
     void update();
 
-    /***
-     * efficient waiting function to sleep until the worker thread has
-     * new data available
-     * @param timeout_in_ms when should the waiting be stopped
-     * @param sleeptime_in_ms
-     * @return
-     */
-    bool waitUntilAvailable(uint32_t timeout_in_ms, uint32_t sleeptime_in_ms=250);
-
-    /***
-     * wait until the gps device sends useful data, e.g. a valid location
-     * @param timeout_in_ms
-     * @param sleeptime_in_ms
-     * @return
-     */
-    bool waitUntilOnline(uint32_t timeout_in_ms, uint32_t sleeptime_in_ms=250);
-
     double latitude() const;
 
     double longitude() const;
@@ -130,6 +110,8 @@ public:
     bool online() const;
 
     unsigned quality() const;
+
+    unsigned satellitesInView() const;
 
     /***
      * get frequency of location update in Hz
@@ -155,7 +137,7 @@ private:
 
     std::thread _thread; // worker thread
 
-    std::mutex _mtx; // mutex for the worker's data
+    std::atomic_flag _flag = ATOMIC_FLAG_INIT;
 
     std::atomic_bool _running = { false }; // worker thread running flag
 

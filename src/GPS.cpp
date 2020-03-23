@@ -1,7 +1,5 @@
 #include <GPS.hpp>
 #include <nmea.hpp>
-#include <unistd.h>
-#include <cstring>
 #include <cmath>
 
 #define EARTH_RADIUS    (6367137.)
@@ -33,8 +31,9 @@ GPS::~GPS() {
 }
 
 void GPS::open(const std::string & devname) {
-    if (isOpen())
+    if (isOpen()) {
         close();
+    }
     _serial = serial::open(devname);
 }
 
@@ -73,29 +72,12 @@ bool GPS::available() const {
 }
 
 void GPS::update() {
-    std::lock_guard<std::mutex> lock(_mtx);
+    while (_flag.test_and_set())
+        ;
      _userdata = _data;
     //memcpy(&_userdata, &_data, sizeof(gps_data_t));
     _available = false;
-}
-
-bool GPS::waitUntilAvailable(uint32_t timeout_in_ms, uint32_t sleeptime_in_ms) {
-    uint32_t counter = 0;
-    while (!available() && (timeout_in_ms == 0 || counter < timeout_in_ms)) {
-        usleep(sleeptime_in_ms * 1000);
-        counter += sleeptime_in_ms;
-    }
-    return available();
-}
-
-bool GPS::waitUntilOnline(uint32_t timeout_in_ms, uint32_t sleeptime_in_ms) {
-    uint32_t counter = 0;
-    while (!online() && (timeout_in_ms == 0 || counter < timeout_in_ms)) {
-        usleep(sleeptime_in_ms * 1000);
-        counter += sleeptime_in_ms;
-        update();
-    }
-    return online();
+    _flag.clear();
 }
 
 double GPS::latitude() const {
@@ -126,6 +108,10 @@ unsigned GPS::quality() const {
     return _userdata.quality;
 }
 
+unsigned GPS::satellitesInView() const {
+    return _userdata.satellites_in_view;
+}
+
 double GPS::locationUpdateFrequency() const {
     return _location_update_freq;
 }
@@ -146,35 +132,35 @@ void GPS::process_messages() {
             continue;
         }
 
-        // determine message type and parse accordingly
-        {
-            std::lock_guard<std::mutex> lock(_mtx);
-            auto mtype = nmea::message_type(message);
-            switch (mtype) {
-                case nmea::GPGGA: {
-                    nmea::parse_gpgga(message, _data);
-                    break;
-                } case nmea::GPRMC: {
-                    nmea::parse_gprmc(message, _data);
-                    break;
-                } case nmea::GPZDA: {
-                    nmea::parse_gpzda(message, _data);
-                    break;
-                } case nmea::GPGSV: {
-                    //nmea::parse_gpgsv(message, _data);
-                    break;
-                } case nmea::GPGLL: {
-                    nmea::parse_gpgll(message, _data);
-                    break;
-                }
-                default: break;
+        while (_flag.test_and_set())
+            ;
+        auto mtype = nmea::message_type(message);
+        switch (mtype) {
+            case nmea::GPGGA: {
+                nmea::parse_gpgga(message, _data);
+                break;
+            } case nmea::GPRMC: {
+                nmea::parse_gprmc(message, _data);
+                break;
+            } case nmea::GPZDA: {
+                nmea::parse_gpzda(message, _data);
+                break;
+            } case nmea::GPGSV: {
+                //nmea::parse_gpgsv(message, _data);
+                break;
+            } case nmea::GPGLL: {
+                nmea::parse_gpgll(message, _data);
+                break;
             }
+            default: break;
+        }
 
-            if (mtype == nmea::GPGGA || mtype == nmea::GPRMC || mtype == nmea::GPGLL) {
-                auto tp = std::chrono::system_clock::now();
-                _location_update_freq = 1.0 / std::chrono::duration_cast<std::chrono::milliseconds>(tp - _last_location_update).count();
-                _last_location_update = tp;
-            }
+        _flag.clear();
+
+        if (mtype == nmea::GPGGA || mtype == nmea::GPRMC || mtype == nmea::GPGLL) {
+            const auto tp = std::chrono::system_clock::now();
+            _location_update_freq = 1.0 / std::chrono::duration_cast<std::chrono::milliseconds>(tp - _last_location_update).count();
+            _last_location_update = tp;
         }
         _available = true;
     }
