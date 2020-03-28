@@ -130,9 +130,10 @@ void GPS::process_messages() {
             continue;
         }
 
-	    { // lock protected region
+	    
+        auto mtype = nmea::message_type(message);
+        { // lock protected region
             std::lock_guard<std::mutex> lock(_mtx);
-            auto mtype = nmea::message_type(message);
             switch (mtype) {
                 case nmea::GPGGA: {
                     nmea::parse_gpgga(message, _data);
