@@ -137,7 +137,7 @@ private:
 
     std::thread _thread; // worker thread
 
-    std::atomic_flag _flag = ATOMIC_FLAG_INIT;
+    std::mutex _mtx; // protect data
 
     std::atomic_bool _running = { false }; // worker thread running flag
 

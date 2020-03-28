@@ -72,12 +72,10 @@ bool GPS::available() const {
 }
 
 void GPS::update() {
-    while (_flag.test_and_set())
-        ;
+    std::lock_guard<std::mutex> lock(_mtx);
      _userdata = _data;
     //memcpy(&_userdata, &_data, sizeof(gps_data_t));
     _available = false;
-    _flag.clear();
 }
 
 double GPS::latitude() const {
@@ -132,30 +130,29 @@ void GPS::process_messages() {
             continue;
         }
 
-        while (_flag.test_and_set())
-            ;
-        auto mtype = nmea::message_type(message);
-        switch (mtype) {
-            case nmea::GPGGA: {
-                nmea::parse_gpgga(message, _data);
-                break;
-            } case nmea::GPRMC: {
-                nmea::parse_gprmc(message, _data);
-                break;
-            } case nmea::GPZDA: {
-                nmea::parse_gpzda(message, _data);
-                break;
-            } case nmea::GPGSV: {
-                //nmea::parse_gpgsv(message, _data);
-                break;
-            } case nmea::GPGLL: {
-                nmea::parse_gpgll(message, _data);
-                break;
+	    { // lock protected region
+            std::lock_guard<std::mutex> lock(_mtx);
+            auto mtype = nmea::message_type(message);
+            switch (mtype) {
+                case nmea::GPGGA: {
+                    nmea::parse_gpgga(message, _data);
+                    break;
+                } case nmea::GPRMC: {
+                    nmea::parse_gprmc(message, _data);
+                    break;
+                } case nmea::GPZDA: {
+                    nmea::parse_gpzda(message, _data);
+                    break;
+                } case nmea::GPGSV: {
+                    //nmea::parse_gpgsv(message, _data);
+                    break;
+                } case nmea::GPGLL: {
+                    nmea::parse_gpgll(message, _data);
+                    break;
+                }
+                default: break;
             }
-            default: break;
         }
-
-        _flag.clear();
 
         if (mtype == nmea::GPGGA || mtype == nmea::GPRMC || mtype == nmea::GPGLL) {
             const auto tp = std::chrono::system_clock::now();
