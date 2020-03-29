@@ -26,12 +26,17 @@ static double gps_deg_dec(double deg_point) {
 }
 
 bool nmea::valid_checksum(const std::string &message) {
-    auto checksum = (uint8_t) strtol(strchr(message.c_str(), '*') + 1, nullptr, 16);
+    const char *checksum_ptr = strchr(message.c_str(), '*');
+    if (checksum_ptr == nullptr) {
+        return false;
+    }
+    auto checksum = (uint8_t) strtol(checksum_ptr + 1, nullptr, 16);
 
     uint8_t sum = 0;
     const char *end = strchr(message.c_str(), '*');
-    if (end == nullptr)
+    if (end == nullptr) {
         return false;
+    }
 
     for (auto ptr = message.c_str() + 1; ptr != end; ++ptr) {
         sum = sum xor *ptr;
@@ -183,4 +188,34 @@ void nmea::parse_gpgsv(const std::string & message, struct gps_data_t & info) {
         p = strchr(p, ',') + 1;
         sat.snr = strtoul(p, nullptr, 10);;
     }
+}
+
+bool nmea::parse_message(const std::string &message, struct gps_data_t &info) {
+    if (message.empty() || message[0] != '$' || !valid_checksum(message)) {
+        return false;
+    }
+
+    auto mtype = message_type(message);
+    switch (mtype) {
+        case GPGGA: {
+            parse_gpgga(message, info);
+            break;
+        } case GPRMC: {
+            parse_gprmc(message, info);
+            break;
+        } case GPZDA: {
+            parse_gpzda(message, info);
+            break;
+        } case GPGLL: {
+            parse_gpgll(message, info);
+            break;
+        } case GPGSV: {
+            //parse_gpgsv(message, info);
+            break;
+        } default: {
+            return false;
+        }
+    }
+
+    return true;
 }

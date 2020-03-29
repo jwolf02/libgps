@@ -5,7 +5,7 @@
 #include <string>
 #include <atomic>
 #include <serial.hpp>
-#include <gps_data.hpp>
+#include <nmea.hpp>
 #include <thread>
 #include <mutex>
 #include <cmath>

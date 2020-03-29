@@ -62,7 +62,7 @@
                               + std::to_string( __LINE__ )          \
                               + std::string( " in " )               \
                               + std::string( __PRETTY_FUNCTION__ )  \
-                              + std::string( ": exception occurred when calling " )                 \
+                              + std::string( ": exception occurred when executing " )                 \
                               + #command);                          \
     }                                                               \
 }

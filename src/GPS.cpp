@@ -118,48 +118,27 @@ void GPS::write(const std::string &command) {
     serial::println(_serial, command);
 };
 
+#include <iostream>
+#include <csignal>
+
+void handler(int signum) {
+    std::cout << "SEGFAULT" << std::endl;
+}
+
 void GPS::process_messages() {
     std::string message;
+
+    signal(SIGSEGV, handler);
 
     while (_running) {
         // read message from UART and check the checksum
         serial::readln(_serial, message);
-        if (!nmea::valid_checksum(message)) {
-            // most often the first message is read incompletely so we do not want
-            // to throw an error for that
-            continue;
-        }
 
-	    
-        auto mtype = nmea::message_type(message);
-        { // lock protected region
+        {
             std::lock_guard<std::mutex> lock(_mtx);
-            switch (mtype) {
-                case nmea::GPGGA: {
-                    nmea::parse_gpgga(message, _data);
-                    break;
-                } case nmea::GPRMC: {
-                    nmea::parse_gprmc(message, _data);
-                    break;
-                } case nmea::GPZDA: {
-                    nmea::parse_gpzda(message, _data);
-                    break;
-                } case nmea::GPGSV: {
-                    //nmea::parse_gpgsv(message, _data);
-                    break;
-                } case nmea::GPGLL: {
-                    nmea::parse_gpgll(message, _data);
-                    break;
-                }
-                default: break;
-            }
+            nmea::parse_message(message, _data);
         }
 
-        if (mtype == nmea::GPGGA || mtype == nmea::GPRMC || mtype == nmea::GPGLL) {
-            const auto tp = std::chrono::system_clock::now();
-            _location_update_freq = 1.0 / std::chrono::duration_cast<std::chrono::milliseconds>(tp - _last_location_update).count();
-            _last_location_update = tp;
-        }
         _available = true;
     }
 }

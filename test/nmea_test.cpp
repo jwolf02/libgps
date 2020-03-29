@@ -1,7 +1,6 @@
 #include <iostream>
 #include <nmea.hpp>
 #include <cstdlib>
-#include <gps_data.hpp>
 #include "test.hpp"
 
 static void test_gpgga() {
@@ -87,6 +86,25 @@ static void test_gpgsv() {
     ASSERT_EQUAL(0, data.satellites[3].snr);
 }
 
+static void test_invalid() {
+    gps_data_t data;
+    //const std::string gpgsa_message("$GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30");
+    const std::string gprmc_message("$GPRMC,094037.00,V,,,,,,,290320,,,N*7E");
+    const std::string gpgga_message("$GPGGA,094215.00,,,,,0,00,99.99,,,,,,*6D");
+    const std::string invalid1("");
+    const std::string invalid2("abcddeffhif*12");
+    const std::string invalid3("$GPGGA*12");
+
+    ASSERT(nmea::valid_checksum(gprmc_message));
+    ASSERT(nmea::valid_checksum(gpgga_message));
+    ASSERT(!nmea::valid_checksum(invalid1));
+    ASSERT(!nmea::valid_checksum(invalid2));
+    ASSERT(!nmea::valid_checksum(invalid3));
+
+    ASSERT_NO_EXCEPTION(nmea::parse_gprmc(gprmc_message, data));
+    ASSERT_NO_EXCEPTION(nmea::parse_gpgga(gpgga_message, data));
+}
+
 void test_gpgll() {
     gps_data_t data;
     const std::string gpgsv_message("$GPGSV,3,1,11,03,03,111,00,04,15,270,00,06,01,010,00,13,06,292,00*74");
@@ -96,13 +114,18 @@ void test_gpgll() {
 
 int main(int argc, const char *argv[]) {
 
-    test_gpgga();
-    test_gprmc();
-    test_gpzda();
-    test_gpgsv();
-    test_gpgll();
+    try {
+        test_gpgga();
+        test_gprmc();
+        test_gpzda();
+        test_gpgsv();
+        test_gpgll();
+        test_invalid();
 
-    std::cout << "test finished successfully" << std::endl;
+        std::cout << "test finished successfully" << std::endl;
 
+    } catch (std::exception &ex) {
+        std::cerr << ex.what() << std::endl;
+    }
     return EXIT_SUCCESS;
 }
