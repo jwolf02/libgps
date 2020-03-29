@@ -18,8 +18,7 @@ set(SOURCES				src/GPS.hpp
 						src/serial.hpp
 						src/serial.cpp
 						src/nmea.hpp
-						src/nmea.cpp
-						src/gps_data.hpp)
+						src/nmea.cpp)
 
 if (BUILD_STATIC_LIB)
 	set(LIB_TYPE STATIC)
